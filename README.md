@@ -3,12 +3,20 @@ PyTorch implementation for <a href="https://www.linkedin.com/in/jan-zuiderveld/d
 
 Supports training on subsets of the Speech Commands and NSYNTH datasets out of the box. Other datasets need customizing. Several implicit decoder architectures, ablations and latent embedding inference methods are implemented.
 
+# Quickstart
+
+```
+git clone https://github.com/janzuiderveld/continuous-audio-representations
+cd continuous-audio-representations
+
+pip3 install -r requirements.txt
+```
+
+Running `Train.py` automatically downloads datasets and set them in place.
 
 # Usage:
 
-`Train.py` is where all the action happens. 
-
-The Following architectures are readily available (these can be trained by supplying these tags as `--architecture` argument): 
+The Following architectures are readily available (these can be trained by supplying these tags as `--architecture` argument for `Train.py`): 
 - wavegan
 - im-net
 - pi-gan
