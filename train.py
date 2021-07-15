@@ -238,7 +238,7 @@ if __name__ == "__main__":
     parser.add_argument('--latent_lr', type=int, default = 0.3, help="Learning rate for latent optimization.")
 
     # === SAMPLING ============================================
-    parser.add_argument('--samples_per_datapoint', type=int, default = 8000, help="Number of samples per wave") 
+    parser.add_argument('--samples_per_datapoint', type=int, default = 4000, help="Number of samples per wave") 
     parser.add_argument('--sample_even', type=int, default = 1, help="Sample coordinates with equal spacing.")              
     
     # === LOSS ============================================
