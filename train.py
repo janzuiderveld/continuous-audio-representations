@@ -227,9 +227,9 @@ if __name__ == "__main__":
     parser.add_argument('--double', type=int, default = 0, help="Enable double precision throughout training")
 
     # === MODEL implicit Decoder params ============================================
-    parser.add_argument('--weight_norm', type=int, default = 0, help="Enable weight norm")
-    parser.add_argument('--first_omega_0', type=int, default = 155, help="First layer input scaling for sinusoidal architectures")
-    parser.add_argument('--hidden_omega_0', type=int, default = 390, help="Hidden layer input scaling for sinusoidal architectures")
+    parser.add_argument('--weight_norm', type=int, default = 0, help="Enable weight normalization")
+    parser.add_argument('--first_omega_0', type=int, default = 3000, help="First layer input scaling for sinusoidal architectures")
+    parser.add_argument('--hidden_omega_0', type=int, default = 30, help="Hidden layer input scaling for sinusoidal architectures")
     parser.add_argument('--coord_multi', type=int, default = 1, help="Input scaling for any architecture")
     
     # === Autodecoder ============================================
@@ -244,9 +244,9 @@ if __name__ == "__main__":
     # === LOSS ============================================
     parser.add_argument('--per_sample', type=int, default=1, help="MSE per sample multiplier for objective function.")    
     parser.add_argument('--deriv_per_sample', type=int, default = 0, help="MSE per sample of derivative of functions multiplier for objective function.")
-    parser.add_argument('--cdpam', type=int, default = 1, help="CDPAM multiplier for objective function")
-    parser.add_argument('--multiscale_STFT', type=int, default = 1, help="Multi STFT multiplier for objective function")
-    parser.add_argument('--weight_decay', type=float, default = 1, help="L2 weight decay amount.")
+    parser.add_argument('--cdpam', type=int, default = 0, help="CDPAM multiplier for objective function")
+    parser.add_argument('--multiscale_STFT', type=int, default = 0, help="Multi STFT multiplier for objective function")
+    parser.add_argument('--weight_decay', type=float, default = 0, help="L2 weight decay amount.")
     
     # === Evaluation ============================================
     parser.add_argument('--eval_every', type=int, default = 500, help="Evaluate every n iterations")
