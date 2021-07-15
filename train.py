@@ -23,7 +23,10 @@ import utils
 import modules
 from objective import objective
 
-import wandb
+try:
+    import wandb
+except:
+    pass
 
 def train(model, optim_INR, optim_mapping, scheduler, train_loader, config):
     utils.init_seed(rand_seed=False)
