@@ -12,7 +12,7 @@ cd continuous-audio-representations
 pip3 install -r requirements.txt
 ```
 
-Running `Train.py` automatically downloads datasets and set them in place.
+Running `Train.py` automatically downloads datasets and sets them in place.
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1d76AI39akbHsX8btZxCxu8AWB8FTjwe8?usp=sharing)
 
