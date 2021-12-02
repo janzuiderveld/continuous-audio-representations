@@ -17,9 +17,9 @@ Running `Train.py` automatically downloads datasets and sets them in place.
 # Usage:
 
 The Following architectures are readily available (these can be trained by supplying these tags as `--architecture` argument for `Train.py`): 
-- wavegan
-- im-net
-- pi-gan
+- wavegan (TCNN)
+- im-net 
+- pi-gan (PCINR)
   - pi-gan_prog
   - pi-gan_sine_first
   - pi-gan_sine_last
@@ -30,7 +30,7 @@ The Following architectures are readily available (these can be trained by suppl
   - pi-gan_five_mapping
   - pi-gan_shrinking
   - pi-gan_deep
-  - pi-gan_wide
+  - pi-gan_wide (PCINR Wide)
 
 Latent embedding inference methdods (`--meta_architecture`):
 - autoencoder
