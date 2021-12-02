@@ -72,7 +72,6 @@ Extensive list of parameters:
 |`--latent_descent_steps`|`1`|Number of gradient descent steps per iteration for latent embedding optimization|
 |`--latent_lr`|`0.3`|Learning rate for latent optimization.|
 |`--samples_per_datapoint`|`8000`|Number of samples per 
-|
 |`--sample_even`|`1`|Sample coordinates with equal spacing.|
 |`--per_sample`|`1`|MSE per sample multiplier for objective function.|
 |`--deriv_per_sample`|`0`|MSE per sample of derivative of functions multiplier for objective function.|
