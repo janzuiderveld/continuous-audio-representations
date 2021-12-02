@@ -1,7 +1,7 @@
 # Continuous audio representations
-PyTorch implementation for <a href="https://www.linkedin.com/in/jan-zuiderveld/detail/overlay-view/urn:li:fsd_profileTreasuryMedia:(ACoAACpnYc4Beb_aC_BHJocToa2u1xbuJjtxXvc,1635463815861)/"> learning to represent audio in a distribution of continuous functions </a> using implicit neural representations a.k.a. INRs, see <a href="https://github.com/janzuiderveld/INR-collection">INR-collection</a> for more details on the used implicit implementations. 
+Official PyTorch implementation for <a href="https://arxiv.org/abs/2111.08462"> Towards Lightweight Controllable Audio Synthesis with Conditional Implicit Neural Representations </a>, see <a href="https://github.com/janzuiderveld/INR-collection">INR-collection</a> for more details on the used implicit implementations. 
 
-Supports training on subsets of the Speech Commands and NSYNTH datasets out of the box. Other datasets need customizing. Several implicit decoder architectures, ablations and latent embedding inference methods are implemented.
+Several implicit decoder architectures, ablations and latent embedding inference methods are implemented.
 
 # Quickstart
 
@@ -40,6 +40,7 @@ For datasets, the following are automatically downloaded when supplied as `--dat
 - SPEECHCOMMANDS
 - NSYNTH.diverse_baseline
 - NSYNTH.keyboard_baseline
+- "Path/to/your/folder/containing/.wav/files"
 
 Extensive list of parameters:
 
