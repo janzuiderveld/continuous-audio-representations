@@ -40,6 +40,8 @@ For datasets, the following are automatically downloaded when supplied as `--dat
 - SPEECHCOMMANDS
 - NSYNTH.diverse_baseline
 - NSYNTH.keyboard_baseline
+
+Alternatively;
 - "Path/to/your/folder/containing/.wav/files"
 
 Extensive list of parameters:
