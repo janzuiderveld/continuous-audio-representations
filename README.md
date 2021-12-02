@@ -1,7 +1,7 @@
 # Continuous audio representations
-Official PyTorch implementation for <a href="https://arxiv.org/abs/2111.08462"> Towards Lightweight Controllable Audio Synthesis with Conditional Implicit Neural Representations </a>, see <a href="https://github.com/janzuiderveld/INR-collection">INR-collection</a> for more details on the used implicit implementations. 
+Official PyTorch implementation for <a href="https://arxiv.org/abs/2111.08462"> Towards Lightweight Controllable Audio Synthesis with Conditional Implicit Neural Representations</a>, see <a href="https://github.com/janzuiderveld/INR-collection">INR-collection</a> for more details on the used implicit neural representation implementations. 
 
-Several implicit decoder architectures, ablations and latent embedding inference methods are implemented.
+Several (implicit) decoder architectures, ablations and latent embedding inference methods are implemented.
 
 # Quickstart
 
@@ -69,7 +69,8 @@ Extensive list of parameters:
 |`--latent_init_std`|`0.001`|Latent embedding initialization std|
 |`--latent_descent_steps`|`1`|Number of gradient descent steps per iteration for latent embedding optimization|
 |`--latent_lr`|`0.3`|Learning rate for latent optimization.|
-|`--samples_per_datapoint`|`8000`|Number of samples per wave|
+|`--samples_per_datapoint`|`8000`|Number of samples per 
+|
 |`--sample_even`|`1`|Sample coordinates with equal spacing.|
 |`--per_sample`|`1`|MSE per sample multiplier for objective function.|
 |`--deriv_per_sample`|`0`|MSE per sample of derivative of functions multiplier for objective function.|
