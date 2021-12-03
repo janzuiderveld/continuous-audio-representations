@@ -47,7 +47,7 @@ def train(model, optim_INR, optim_mapping, scheduler, train_loader, config):
             all_z = all_z.double()
     try:
         print(f"Starting run for {config.num_epochs} epochs..")
-        for epoch in range(config.num_epochs):
+        for epoch in range(config.num_epochs + 1):
             if config.prog_weight_decay_every:
                 if not epoch % config.prog_weight_decay_every:
                     weight_decay_override = max(0, config.weight_decay / (config.prog_weight_decay_factor**(epoch / config.prog_weight_decay_every)))
@@ -123,6 +123,16 @@ def train(model, optim_INR, optim_mapping, scheduler, train_loader, config):
             train_loss_avg[-1] /= processed_batches
             print(f"Epoch {epoch}  Loss: {train_loss_avg[-1]:.3f}, {len(indices.view(-1))/(time.time()-starttime)} samples/sec")
 
+            # save model if best loss
+            if (epoch > config.num_epochs//2) and train_loss_avg[-1] < min(train_loss_avg[:-1]):
+                os.makedirs(f"{config.save_path}/checkpoint", exist_ok=True)
+                print(f"Saving model with loss {train_loss_avg[-1]}")
+                torch.save(model, f"{config.save_path}/checkpoint/model_best.pt")
+                if config["meta_architecture"] == "autodecoder":
+                    all_z_np = all_z.detach().cpu().numpy()
+                    os.makedirs(f"{config.save_path}/latents", exist_ok=True)
+                    np.save(f"{config.save_path}/latents/z_all_best.npy", all_z_np)
+
             # Evaluation ========================================== 
             if not epoch%config.eval_every:
                 with torch.no_grad():
@@ -191,8 +201,8 @@ def train(model, optim_INR, optim_mapping, scheduler, train_loader, config):
                     
                     torch.cuda.empty_cache()
             
-                if config.wandb:
-                    wandb.log({"loss": train_loss_avg[-1]})
+            if config.wandb:
+                wandb.log({"loss": train_loss_avg[-1]})
 
     except KeyboardInterrupt:
         torch.save(model, f"{args.save_path}/model_final.pth")
@@ -205,23 +215,25 @@ def train(model, optim_INR, optim_mapping, scheduler, train_loader, config):
         
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()    
-    parser.add_argument("--wandb", type=int, default = 0, help="Enable wandb logging")
-    parser.add_argument("--wandb_project_name", type=str, default = "default", help="Name of wandb project")
+    parser.add_argument("--wandb", type=int, default = 1, help="Enable wandb logging")
+    ##################################################################################
+    parser.add_argument("--wandb_project_name", type=str, default = "neurips", help="Name of wandb project")
 
     # === TRAINING ============================================
-    parser.add_argument('--dataset_name', type=str, default = 'SPEECHCOMMANDS', help="Which dataset to train on.", choices=["NSYNTH.diverse_baseline", "NSYNTH.keyboard_baseline", "SPEECHCOMMANDS", "custom"]) 
+    parser.add_argument('--dataset_name', type=str, default = '/home/janz/continuous-audio-representations/data/nsynth_diverse', help="Which dataset to train on.") 
     parser.add_argument('--dataset_size', type=int, default = 128, help="Number of samples to train on. Maximum is 1024 in given datasets") 
     parser.add_argument('--audio_length', type=int, default = 16000, help="Audio length")
     parser.add_argument('--autoconfig', type=int, default = 0, help="Enable autoconfig. Overrides omega_0 values depending on dataset and architecture for tested setups.")
     
     parser.add_argument('--lr', type=float, default = 1e-5, help="Learning rate")
-    parser.add_argument('--batch_size', type=int, default = 32, help="Batch_size")
-    parser.add_argument('--num_epochs', type=int, default = 5001, help="Number of epochs")
+    parser.add_argument('--batch_size', type=int, default = 128, help="Batch_size")
+    ##################################################################################
+    parser.add_argument('--num_epochs', type=int, default = 10001, help="Number of epochs")
     parser.add_argument('--use_gpu', type=int, default = 1, help="Enable GPU")
     parser.add_argument('--use_multi_gpu', type=int, default = 0, help="Enable multiple GPUs")
 
     # === MODEL Decoder invariant params ============================================
-    parser.add_argument('--architecture', type=str, default = "pi-gan", help="What architecture to use as the decoder.", choices=["wavegan", "im-net", "pi-gan", "pi-gan_prog", "pi-gan_sine_first", "pi-gan_sine_last", "pi-gan_relu", "pi-gan_concat_middle", "pi-gan_concat_all", "pi-gan_min_mapping", "pi-gan_five_mapping", "pi-gan_shrinking", "pi-gan_deep", "pi-gan_wide"]) 
+    parser.add_argument('--architecture', type=str, default = "wavegan", help="What architecture to use as the decoder.", choices=["wavegan", "im-net", "pi-gan", "pi-gan_prog", "pi-gan_sine_first", "pi-gan_sine_last", "pi-gan_relu", "pi-gan_concat_middle", "pi-gan_concat_all", "pi-gan_min_mapping", "pi-gan_five_mapping", "pi-gan_shrinking", "pi-gan_deep", "pi-gan_wide"]) 
     parser.add_argument('--meta_architecture', type=str, default = "autodecoder", help="What latent embedding inference method to use.", choices=["autoencoder", "autodecoder"]) 
     parser.add_argument('--num_latent', type=int, default = 256, help="Number of latent dimensions")
     parser.add_argument('--double', type=int, default = 0, help="Enable double precision throughout training")
@@ -238,19 +250,20 @@ if __name__ == "__main__":
     parser.add_argument('--latent_lr', type=int, default = 0.3, help="Learning rate for latent optimization.")
 
     # === SAMPLING ============================================
-    parser.add_argument('--samples_per_datapoint', type=int, default = 4000, help="Number of samples per wave") 
+    parser.add_argument('--samples_per_datapoint', type=int, default = 2000, help="Number of samples per wave") 
     parser.add_argument('--sample_even', type=int, default = 1, help="Sample coordinates with equal spacing.")              
     
     # === LOSS ============================================
     parser.add_argument('--per_sample', type=int, default=1, help="MSE per sample multiplier for objective function.")    
-    parser.add_argument('--deriv_per_sample', type=int, default = 0, help="MSE per sample of derivative of functions multiplier for objective function.")
+    parser.add_argument('--deriv_per_sample', type=int, default = 1, help="MSE per sample of derivative of functions multiplier for objective function.")
     parser.add_argument('--cdpam', type=int, default = 0, help="CDPAM multiplier for objective function")
     parser.add_argument('--multiscale_STFT', type=int, default = 0, help="Multi STFT multiplier for objective function")
     parser.add_argument('--weight_decay', type=float, default = 0, help="L2 weight decay amount.")
     
     # === Evaluation ============================================
-    parser.add_argument('--eval_every', type=int, default = 500, help="Evaluate every n iterations")
-    parser.add_argument('--save_audio_plots', type=int, default = 1, help="Save audio plots at every evaluation")
+    ###############################################################################
+    parser.add_argument('--eval_every', type=int, default = 5000, help="Evaluate every n iterations")
+    parser.add_argument('--save_audio_plots', type=int, default = 0, help="Save audio plots at every evaluation")
     parser.add_argument('--save_latents', type=int, default = 1, help="Save latent embeddings")
     parser.add_argument('--save_audio', type=int, default = 1, help="Save generated audio at end of training.")
     parser.add_argument('--save_model', type=int, default = 1, help="Save model at end of training.")
@@ -294,8 +307,13 @@ if __name__ == "__main__":
 
     train_loader = get_dataloader(args.dataset_name, args.dataset_size, args.batch_size)
     
+    if "/" in args.dataset_name:
+        dataset_name = args.dataset_name.split("/")[-1]
+    else:
+        dataset_name = args.dataset_name
+
     if args.save_path == "auto":
-        args.save_path = f"{args.note}/{args.dataset_name}/{args.architecture}/{args.meta_architecture}"
+        args.save_path = f"{args.note_general}/{dataset_name}/{args.architecture}/{args.meta_architecture}"
     args.save_path = f"results/{args.save_path}"
     
     config_dict = utils.AttrDict()

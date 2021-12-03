@@ -7,11 +7,16 @@ import os
 import librosa
 
 def get_optim(config, model):
-    optim_INR = AdaBelief(model.net.parameters(), lr=config.lr, eps=1e-16, betas=(0.9,0.999), weight_decouple = 0, weight_decay = config.weight_decay, rectify = False)
+    if config.architecture != 'wavegan':
+        optim_INR = AdaBelief(model.net.parameters(), lr=config.lr, eps=1e-16, betas=(0.9,0.999), weight_decouple = 0, weight_decay = config.weight_decay, rectify = False)
+    else:
+        optim_INR = AdaBelief(model.parameters(), lr=config.lr, eps=1e-16, betas=(0.9,0.999), weight_decouple = 0, weight_decay = config.weight_decay, rectify = False)
+
     if hasattr(model, 'mapping_net'):
         optim_mapping = AdaBelief(model.mapping_net.parameters(), lr=config.lr, eps=1e-16, betas=(0.9,0.999), weight_decouple = 0, weight_decay = 0, rectify = False)
     else:
         optim_mapping = None
+        
     return optim_INR, optim_mapping
 
 def saveAudioBatch(data, path, basename, sr=16000, overwrite=False):

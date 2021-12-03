@@ -353,11 +353,32 @@ class SPEECHCOMMANDSidx(Dataset):
     def __len__(self):
         return len(self.SPEECHCOMMANDS)
 
+class CustomDataset(Dataset):
+
+    def __init__(self, audio_dir, dataset_size):
+        self.audio_dir = audio_dir
+        self.samples = glob.glob(f"{self.audio_dir}/*.wav")[:dataset_size]
+        self.indices = np.arange(len(self.samples))
+        # self.indices = [i for i in self.samples]
+
+    def __len__(self):
+        return len(self.samples)
+
+    def __getitem__(self, index):
+        audio_sample_path = self.samples[index]
+        signal, sr = torchaudio.load(audio_sample_path)
+        return signal, index
+
 def get_dataloader(dataset, dataset_size, batch_size):
     if "." in dataset:
         dataset_name, instrument = dataset.split(".")
     else:
         dataset_name = dataset
+
+    if "/" in dataset:
+        dataset = CustomDataset(dataset, dataset_size)
+        sampler = torch.utils.data.SubsetRandomSampler(dataset.indices)
+        dataloader = DataLoader(dataset, batch_size=batch_size, num_workers=0, pin_memory=True, collate_fn=audio_pad_fn, sampler=sampler)
 
     if dataset_name == "NSYNTH":
         dataset = NSynthDataset(dataset_size=dataset_size, instrument=instrument)

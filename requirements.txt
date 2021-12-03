@@ -1,5 +1,5 @@
 torchaudio==0.7.0
-torch==1.7.1
+torch
 numpy==1.19.5
 adabelief_pytorch==0.2.0
 INR_collection==0.2.0
