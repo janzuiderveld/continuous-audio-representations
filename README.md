@@ -1,5 +1,5 @@
 # Towards Lightweight Controllable Audio Synthesis with Conditional Implicit Neural Representations
-Official PyTorch implementation for <a href="https://arxiv.org/abs/2111.08462"> Towards Lightweight Controllable Audio Synthesis with Conditional Implicit Neural Representations</a>.
+Official PyTorch implementation for <a href="https://arxiv.org/abs/2111.08462"> Towards Lightweight Controllable Audio Synthesis with Conditional Implicit Neural Representations</a>. Accepted to "Deep Generative Models and Downstream Applications" (Oral) and "Machine Learning for Creativity and Design" (Poster) workshops at NeurIPS 2021.
 
 See <a href="https://github.com/janzuiderveld/INR-collection">INR-collection</a> for more details on the used implicit neural representation implementations. 
 
