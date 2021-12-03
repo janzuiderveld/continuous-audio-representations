@@ -1,5 +1,7 @@
-# Continuous audio representations
-Official PyTorch implementation for <a href="https://arxiv.org/abs/2111.08462"> Towards Lightweight Controllable Audio Synthesis with Conditional Implicit Neural Representations</a>, see <a href="https://github.com/janzuiderveld/INR-collection">INR-collection</a> for more details on the used implicit neural representation implementations. 
+# Towards Lightweight Controllable Audio Synthesis with Conditional Implicit Neural Representations
+Official PyTorch implementation for <a href="https://arxiv.org/abs/2111.08462"> Towards Lightweight Controllable Audio Synthesis with Conditional Implicit Neural Representations</a>.
+
+See <a href="https://github.com/janzuiderveld/INR-collection">INR-collection</a> for more details on the used implicit neural representation implementations. 
 
 Several (implicit) decoder architectures, ablations and latent embedding inference methods are implemented.
 
